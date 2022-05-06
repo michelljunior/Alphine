@@ -1,0 +1,96 @@
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="../../Estilo/Icones/25x25.png" type="image/x-icon">
+		<link rel="stylesheet" href="../../Estilo/Css/Index.css">
+		<link rel="stylesheet" href="../../Modulos/Semantic/semantic.min.css">
+		<script src="../../Modulos/Jquery/Jquery.min.js"></script>
+		<script src="../../Modulos/Semantic/semantic.min.js"></script>
+		<script src="../../Js/neutralino.js"></script>
+		<title>Alphine - Salo Soluções Financeiras</title>
+	</head>
+	<body>
+		<div class="ui secondary pointing menu">
+			<a href="../../index.html" class="item">Inicio</a>
+			<a href="../Emprestimos/index.html" class="item">Empréstimos</a>
+			<a href="./" class="item active">Clientes</a>
+			<div class="right menu">
+				<a href="../Sobre/index.html"class="ui item">Sobre o Aphine</a>
+			</div>
+		</div>
+		<div class="Conteudo">
+			<h3>Clientes</h3>
+			<a href="./Cadastrar/index.html" class="ui primary button">Cadastrar um novo cliente</a>
+			<button onclick="ApagarRegistros()" class="ui red button">Apagar todos os clientes</button>
+			<div class="Linha"></div>
+			<div style="overflow-x: scroll;width: 100%;">
+				<table class="ui single line table">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Nome</th>
+							<th>CPF</th>
+							<th>RG</th>
+							<th>E-mail</th>
+							<th>Nascimento</th>
+							<th>Telefone</th>
+							<th>CEP</th>
+							<th>Endereço</th>
+							<th>Numero</th>
+							<th>Bairro</th>
+							<th>Complemento</th>
+							<th>Cidade</th>
+							<th>UF</th>
+							<th>Observação</th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody class="Registros">
+						
+					</tbody>
+				</table>
+				<div class="Linha"></div>
+			</div>
+		</div>
+		<script src="../../Js/index.js"></script>
+		<script>
+			function ApagarRegistros(){
+				Neutralino.filesystem.writeFile('C:/Alphine/Clientes.json', '[]');
+				window.location.href = './';
+			}
+
+			Neutralino.filesystem.readFile('C:/Alphine/Clientes.json').then(resultado => {
+				Clientes = JSON.parse(resultado);
+				
+				for (var Cliente = 0; Cliente < Clientes.length; Cliente++){
+					document.querySelector('.Registros').innerHTML += `
+					<tr>
+						<td>`+Clientes[Cliente]["ID"]+`</td>
+						<td>`+Clientes[Cliente]["Nome"]+`</td>
+						<td>`+Clientes[Cliente]["Cpf"]+`</td>
+						<td>`+Clientes[Cliente]["Rg"]+`</td>
+						<td>`+Clientes[Cliente]["Email"]+`</td>
+						<td>`+Clientes[Cliente]["Nascimento"]+`</td>
+						<td>`+Clientes[Cliente]["Telefone"]+`</td>
+						<td>`+Clientes[Cliente]["Cep"]+`</td>
+						<td>`+Clientes[Cliente]["Endereco"]+`</td>
+						<td>`+Clientes[Cliente]["Numero"]+`</td>
+						<td>`+Clientes[Cliente]["Bairro"]+`</td>
+						<td>`+Clientes[Cliente]["Complemento"]+`</td>
+						<td>`+Clientes[Cliente]["Cidade"]+`</td>
+						<td>`+Clientes[Cliente]["Uf"]+`</td>
+						<td>`+Clientes[Cliente]["Observacao"]+`</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					`;
+				}
+			});
+		</script>
+	</body>
+</html>

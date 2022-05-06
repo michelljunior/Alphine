@@ -1,0 +1,194 @@
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="../../../Estilo/Icones/25x25.png" type="image/x-icon">
+		<link rel="stylesheet" href="../../../Estilo/Css/Index.css">
+		<link rel="stylesheet" href="../../../Modulos/Semantic/semantic.min.css">
+		<script src="../../../Modulos/Jquery/Jquery.min.js"></script>
+		<script src="../../../Modulos/Semantic/semantic.min.js"></script>
+		<script src="../../../Js/neutralino.js"></script>
+		<script src="../../../Js/Mascara.js"></script>
+		<title>Alphine - Salo Soluções Financeiras</title>
+	</head>
+	<body>
+		<div class="ui secondary pointing menu">
+			<a href="../index.html" class="item">Voltar</a>
+		</div>
+		<div class="Conteudo">
+			<h3>Cadastrar</h3>
+			<p style="color: red;"><strong name="Erro"></strong></p>
+			<p style="color: green;"><strong name="Sucesso"></strong></p>
+			<div class="Linha"></div>
+			<div class="ui form" style="width: 100%;">
+				<div class="three fields">
+					<div class="field">
+						<label>Nome *</label>
+						<input type="text" name="Nome" placeholder="Nome do cliente *">
+					</div>
+					<div class="field">
+						<label>Sobrenome *</label>
+						<input type="text" name="SNome" placeholder="Sobrenome do cliente *">
+					</div>
+					<div class="field">
+						<label>RG *</label>
+						<input type="text" name="RG" placeholder="RG do cliente *">
+					</div>
+					<div class="field">
+						<label>CPF *</label>
+						<input type="text" name="CPF" placeholder="CPF do cliente *">
+					</div>
+					<div class="field">
+						<label>Nascimento *</label>
+						<input type="date" name="Nascimento" placeholder="Nascimento do cliente *">
+					</div>
+				</div>
+			</div>
+			<div class="Linha"></div>
+			<div class="ui form" style="width: 100%;">
+				<div class="three fields">
+					<div class="field">
+						<label>Email *</label>
+						<input type="text" name="Email" placeholder="Email do cliente *">
+					</div>
+					<div class="field">
+						<label>Telefone *</label>
+						<input type="text" name="Telefone" placeholder="Telefone do cliente *">
+					</div>
+					<div class="field">
+						<label>CEP *</label>
+						<input onkeyup="ConsultaCEP()" type="text" name="CEP" placeholder="CEP do cliente *">
+					</div>
+					<div class="field">
+						<label>Endereço *</label>
+						<input type="text" name="Endereco" placeholder="Endereco do cliente *">
+					</div>
+					<div class="field">
+						<label>Numero *</label>
+						<input type="text" name="Numero" placeholder="Numero do cliente *">
+					</div>
+				</div>
+				<div class="Linha"></div>
+				<div class="ui form" style="width: 100%;">
+					<div class="three fields">
+						<div class="field">
+							<label>Bairro *</label>
+							<input type="text" name="Bairro" placeholder="Bairro do cliente *">
+						</div>
+						<div class="field">
+							<label>Complemento *</label>
+							<input type="text" name="Complemento" placeholder="Complemento do cliente *">
+						</div>
+						<div class="field">
+							<label>Cidade *</label>
+							<input type="text" name="Cidade" placeholder="Cidade do cliente *">
+						</div>
+						<div class="field">
+							<label>UF *</label>
+							<input type="text" name="UF" placeholder="UF do cliente *">
+						</div>
+						<div class="field">
+							<label>Observação</label>
+							<input type="text" name="Observacao" placeholder="Observação">
+						</div>
+					</div>
+				</div>
+				<div class="Linha"></div>
+				<button onclick="CadastrarCliente()" class="ui button primary">Cadastrar cliente</button>
+			</div>
+		</div>
+		<script src="../../../Js/index.js"></script>
+		<script>
+			$('[name=CPF]').mask('000.000.000-00');
+            $('[name=RG]').mask('00.000.000-0');
+            $('[name=Telefone]').mask('(00) 00000-0000');
+            $('[name=CEP]').mask('00000-000');
+            $('[name=Numero]').mask('00000');
+            $('[name=UF]').mask('AA');
+
+			function ConsultaCEP(){
+                if (document.querySelector('[name=CEP]').value.length == 9){
+                    cep = document.querySelector('[name=CEP]').value;
+                    cep = cep.replace(/-/gi, "");
+
+                    function TratarResposta() {
+                        dados = JSON.parse(this.responseText);
+                        document.querySelector('[name=Endereco]').value = dados['logradouro'];
+                        document.querySelector('[name=Cidade]').value = dados['localidade'];
+                        document.querySelector('[name=Bairro]').value = dados['bairro'];
+                        document.querySelector('[name=UF]').value = dados['uf'];
+                        
+                        document.querySelector('[name=Endereco]').disabled = true;
+                        document.querySelector('[name=Cidade]').disabled = true;
+                        document.querySelector('[name=Bairro]').disabled = true;
+                        document.querySelector('[name=UF]').disabled = true;
+                    };
+                    
+                    Consulta = new XMLHttpRequest();
+                    Consulta.onload = TratarResposta;
+                    Consulta.open("get", "https://viacep.com.br/ws/"+cep+"/json", true);
+                    Consulta.send();
+
+                }
+            }
+
+			function CadastrarCliente(){
+                // Coleta os dados pessoais do cliente
+                Nome = document.querySelector('[name=Nome]').value;
+                Cpf = document.querySelector('[name=CPF]').value;
+                Rg = document.querySelector('[name=RG]').value;
+                Email = document.querySelector('[name=Email]').value;
+                Nascimento = document.querySelector('[name=Nascimento]').value;
+                Telefone = document.querySelector('[name=Telefone]').value;
+                Cep = document.querySelector('[name=CEP]').value;
+                Endereco = document.querySelector('[name=Endereco]').value;
+                Numero = document.querySelector('[name=Numero]').value;
+                Bairro = document.querySelector('[name=Bairro]').value;
+                Complemento = document.querySelector('[name=Complemento]').value;
+                Cidade = document.querySelector('[name=Cidade]').value;
+                Uf = document.querySelector('[name=UF]').value;
+                Observacao = document.querySelector('[name=Observacao]').value;
+
+                function Vazio(Campo){
+                    if (Campo == '' || Campo == null || Campo == 0 || Campo == "0"){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+
+                if (Vazio(Nome) || Vazio(Cpf) || Vazio(Rg) || Vazio(Email) || Vazio(Nascimento) || Vazio(Telefone) || Vazio(Cep) || Vazio(Endereco) || Vazio(Numero) || Vazio(Bairro) || Vazio(Cidade) || Vazio(Uf)){
+					document.querySelector('[name=Erro]').innerHTML = 'Preencha todos os campos antes de cadastrar o cliente!';
+				}else{
+					Neutralino.filesystem.readFile('C:/Alphine/Clientes.json').then(resultado => {
+						console.log(resultado)
+						Dados = JSON.parse(resultado)
+						ID_Cliente = Dados.length + 1;
+
+						Dados.push({
+							"ID": ID_Cliente,
+							"Nome": Nome,
+							"Cpf": Cpf,
+							"Rg": Rg,
+							"Email": Email,
+							"Nascimento": Nascimento,
+							"Telefone": Telefone,
+							"Cep": Cep,
+							"Endereco": Endereco,
+							"Numero": Numero,
+							"Bairro": Bairro,
+							"Complemento": Complemento,
+							"Cidade": Cidade,
+							"Uf": Uf,
+							"Observacao": Observacao
+						})
+
+						Neutralino.filesystem.writeFile('C:/Alphine/Clientes.json', JSON.stringify(Dados));
+						document.querySelector('[name=Sucesso]').innerHTML = 'Cliente cadastrado com sucesso!';
+					});
+				}
+			}
+		</script>
+	</body>
+</html>

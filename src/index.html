@@ -1,0 +1,211 @@
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="./Estilo/Icones/25x25.png" type="image/x-icon">
+		<link rel="stylesheet" href="./Estilo/Css/Index.css">
+		<link rel="stylesheet" href="./Modulos/Semantic/semantic.min.css">
+		<script src="./Modulos/Jquery/Jquery.min.js"></script>
+		<script src="./Modulos/Semantic/semantic.min.js"></script>
+		<title>Alphine - Salo Soluções Financeiras</title>
+	</head>
+	<body>
+		<div class="ui secondary pointing menu">
+			<a href="./index.html" class="item active">Inicio</a>
+			<a href="./Paginas/Emprestimos/index.html" class="item">Empréstimos</a>
+			<a href="./Paginas/Clientes/index.html" class="item">Clientes</a>
+			<div class="right menu">
+				<a href="./Paginas/Sobre/index.html" class="ui item">Sobre o Aphine</a>
+			</div>
+		</div>
+		<div class="Conteudo">
+			<h3>Simulador</h3>
+			<p style="color: red;"><strong name="Erro"></strong></p>
+			<div class="Conjunto" style="justify-content: flex-start;width: 100%;">
+				<div class="ui form" style="width: 80%;">
+					<div class="three fields">
+						<div class="field">
+							<label>Valor do empréstimo *</label>
+							<input type="text" name="Capital" placeholder="Valor do empréstimo">
+						</div>
+						<div class="field">
+							<label>Parcelas *</label>
+							<select type="text" class="ui compact selection dropdown" name="Parcelas">
+								<option value="0">Parcelas *</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
+						</div>
+						<div class="field">
+							<label>Taxa de juros *</label>
+							<div name="dJuros" class="ui right labeled input">
+								<input type="text" name="Juros" placeholder="Taxa de juros ao mês">
+								<div class="ui basic label">%</div>
+							</div>
+						</div>
+						<div class="field">
+							<label>Vencimento primeira fatura *</label>
+							<input type="date" name="Vencimento" placeholder="Valor do empréstimo">
+						</div>
+					</div>
+				</div>
+				<div class="Separador"></div>
+				<div class="">
+					<div class="Separador"></div>
+					<button onclick="CalcularEmprestimo()" style="margin-top: 5px;" class="ui secondary button">Fazer simulação</button>
+				</div>
+			</div>
+			<div class="Gerar"></div>
+			<table class="ui single line table" style="width: 500px;">
+				<thead>
+					<tr>
+						<th>Valor do empréstimo</th>
+						<th>Parcelas</th>
+						<th>Valor das parcelas</th>
+						<th>Juros</th>
+						<th>Total a pagar</th>
+						<th>Lucro Bruto</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong class="TextoPrimario" name="Campo_Capital">R$ 0,00</strong></td>
+						<td><strong class="TextoPrimario" name="Campo_Parcelas">0</strong></td>
+						<td><strong class="TextoPrimario" name="Campo_Valor_Parcelas">R$ 0,00</strong></td>
+						<td><strong class="TextoPrimario" name="Campo_Juros">R$ 0,00</strong></td>
+						<td><strong class="TextoPrimario" name="Campo_Montante">R$ 0,00</strong></td>
+						<td><strong class="TextoPrimario" name="Campo_Lucro_Bruto">R$ 0,00</strong></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="Resultado"></div>
+		</div>
+		<script src="./Js/neutralino.js"></script>
+		<script src="./Js/index.js"></script>
+	<script>
+		// Define a data de vencimento
+		Agora = Date.now();
+		Hoje = new Date(Agora);
+
+		Mes = Hoje.getMonth() + 1;
+		Ano = Hoje.getFullYear();
+		Dia = Hoje.getDate();
+
+		if (Mes < 10){
+			Mes = '0'+Mes;
+		}
+
+		if (Dia < 10){
+			Dia = '0'+Dia;
+		}
+
+		if (Mes == 00 || Mes == "00"){
+			Mes = '12';
+		}
+
+		document.querySelector('[name=Vencimento]').min = Ano+'-'+Mes+'-'+Dia
+
+		function CalcularEmprestimo(){
+			Capital = document.querySelector("[name=Capital]");
+			Parcelas = document.querySelector("[name=Parcelas]");
+			Juros = document.querySelector("[name=Juros]");
+			Vencimento = document.querySelector('[name=Vencimento]')
+			Parcelas = Parcelas.value;
+			Capital = Capital.value;
+			Juros = Juros.value;
+			Juros = Juros.replace(/,/gi, '.');
+			Vencimento = Vencimento.value
+			
+			if (Capital == 0 || Parcelas == 0 || Juros == 0 || Capital == "" || Juros == "" || Vencimento == ""){
+				document.querySelector('[name=Erro]').innerHTML = 'Preencha todos os campos antes de fazer a simulação!';
+			}else{
+				Parcelas = parseInt(Parcelas);
+				Capital = parseInt(Capital);
+
+				Montante = Capital * Juros / 100 * Parcelas + Capital
+				Parcela = Montante / Parcelas
+				jurosPagos = Parcela - Capital / Parcelas
+				
+				document.querySelector('[name=Campo_Capital]').textContent = Capital.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+				document.querySelector('[name=Campo_Parcelas]').textContent = Parcelas;
+				document.querySelector('[name=Campo_Valor_Parcelas]').textContent = Parcela.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+				document.querySelector('[name=Campo_Juros]').textContent = Juros+'% a.m';
+				document.querySelector('[name=Campo_Montante]').textContent = Montante.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+				document.querySelector('[name=Campo_Lucro_Bruto]').textContent = parseInt(Montante-Capital).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+
+				document.querySelector('.Resultado').innerHTML = `
+					<strong>Detalhes do empréstimo</strong>
+					<table class="ui single line table" style="width: 500px;">
+					<thead>
+						<tr>
+							<th>Nº Parcela</th>
+							<th>Valor</th>
+							<th>Juros</th>
+							<th>Vencimento</th>
+						</tr>
+					</thead>
+					<tbody class="qtdParcelas">
+						
+					</tbody>
+				</table>
+				`;
+
+				document.querySelector('.Gerar').innerHTML = `
+				<div class="ui form" style="width: 500px;">
+					<div class="three fields">
+						<div class="field">
+							<label>CPF do cliente *</label>
+							<input type="text" name="CPF" placeholder="CPF do cliente">
+						</div>
+						<div class="field">
+							<button onclick="" style="margin-top: 25px;" class="ui primary button">Criar contrato</button>
+						</div>
+					</div>
+				</div>
+				`;
+
+				for (var nParcela = 1;nParcela <= Parcelas; nParcela++){
+					if (nParcela > 1){
+						DataVencimento = new Date(Vencimento);
+						DataVencimento.setMonth(DataVencimento.getMonth() + nParcela);
+						Mes = DataVencimento.getMonth() ;
+						Ano = DataVencimento.getFullYear();
+						Dia = DataVencimento.getDate() + 1;
+
+						if (Mes < 10){
+							Mes = '0'+Mes;
+						}
+
+						if (Dia < 10){
+							Dia = '0'+Dia;
+						}
+
+						if (Mes == 00 || Mes == "00"){
+							Mes = '12';
+							Ano = DataVencimento.getFullYear() - 1;
+						}
+
+						DataVencimento = Dia+'/'+Mes+'/'+Ano
+					}else{
+						DataVencimento = Vencimento.replace(/(\d+)-(\d+)-(\d+)/gi, "$3/$2/$1");
+					}
+					
+					document.querySelector('.qtdParcelas').innerHTML += '<td>'+nParcela+'</td><td>'+Parcela.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})+'</td><td>'+jurosPagos.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})+'</td><td>'+DataVencimento+'</td>';
+				}
+				
+			}
+		}
+	</script>
+	</body>
+</html>
