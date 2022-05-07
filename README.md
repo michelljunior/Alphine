@@ -1,17 +1,4 @@
-# neutralinojs-minimal
-
-The default template for a Neutralinojs app. It's possible to use your favorite frontend framework by using [these steps](https://neutralino.js.org/docs/how-to/use-a-frontend-library).
-
-## Contributors
-
-<a href="https://github.com/neutralinojs/neutralinojs-minimal/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=neutralinojs/neutralinojs-minimal" />
-</a>
-
-## License
-
-[MIT](LICENSE)
-
-## Icon credits
-
-- `trayIcon.png` - Made by [Freepik](https://www.freepik.com) and downloaded from [Flaticon](https://www.flaticon.com)
+Olá meu nome é Michel Anderson, sou desenvolvedor e criador do alphine.
+trabalhar com planilhas ajuda muito, mas já pensou na praticidade de um programa só para "Agiotas"
+kk palavra feia somos apenas emprestadores de dinheiro, enfim fiz esse programa para ajudar
+quem esta entrando no ramo, espero que seja útil, é totalmente gratuito e os dados ficam somente na sua maquina
