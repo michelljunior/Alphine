@@ -1,0 +1,67 @@
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="../../../Estilo/Icones/25x25.png" type="image/x-icon">
+		<link rel="stylesheet" href="../../../Estilo/Css/Index.css">
+		<link rel="stylesheet" href="../../../Modulos/Semantic/semantic.min.css">
+		<script src="../../../Modulos/Jquery/Jquery.min.js"></script>
+		<script src="../../../Modulos/Semantic/semantic.min.js"></script>
+		<script src="../../../Js/neutralino.js"></script>
+		<title>Alphine - Salo Soluções Financeiras</title>
+	</head>
+	<body>
+		<div class="ui secondary pointing menu">
+			<a href="../index.html" class="item active">Voltar</a>
+		</div>
+		<div class="Conteudo">
+			<h3>Faturas</h3>
+			<p style="color: red;"><strong name="Erro"></strong></p>
+			<p style="color: green;"><strong name="Sucesso"></strong></p>
+			<div class="Linha"></div>
+			<div style="overflow-x: scroll;width: 100%;">
+				<table class="ui single line table">
+					<thead>
+						<tr>
+							<th>ID Contrato</th>
+							<th>Numero Fatura</th>
+							<th>Valor Parcela</th>
+							<th>Juros Pagos</th>
+							<th>Data Vencimento</th>
+							<th>Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody class="Registros">
+						
+					</tbody>
+				</table>
+				<div class="Linha"></div>
+			</div>
+		</div>
+		<script src="../../../Js/index.js"></script>
+		<script>
+
+			Neutralino.filesystem.readFile('C:/Alphine/Faturas.json').then(resultado => {
+				Faturas = JSON.parse(resultado);
+				
+				var FaturasContrato = Faturas.filter(function(item) { return item['ID_Contrato'] == localStorage.getItem('ID_Contrato'); });
+				console.log(FaturasContrato); 
+
+				for (var Fatura = 0; Fatura < FaturasContrato.length; Fatura++){
+					document.querySelector('.Registros').innerHTML += `
+					<tr>
+						<td>`+FaturasContrato[Fatura]["ID_Contrato"]+`</td>
+						<td>`+FaturasContrato[Fatura]["Numero_Fatura"]+`</td>
+						<td>`+FaturasContrato[Fatura]["Valor_Parcela"]+`</td>
+						<td>`+FaturasContrato[Fatura]["Juros_Pagos"]+`</td>
+						<td>`+FaturasContrato[Fatura]["Data_Vencimento"]+`</td>
+						<td>`+FaturasContrato[Fatura]["Status"]+`</td>
+					</tr>
+					`;
+				}
+			});
+		</script>
+	</body>
+</html>

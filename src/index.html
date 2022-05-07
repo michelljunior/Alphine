@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="./Modulos/Semantic/semantic.min.css">
 		<script src="./Modulos/Jquery/Jquery.min.js"></script>
 		<script src="./Modulos/Semantic/semantic.min.js"></script>
+		<script src="../../../Js/Mascara.js"></script>
 		<title>Alphine - Salo Soluções Financeiras</title>
 	</head>
 	<body>
@@ -22,6 +23,7 @@
 		<div class="Conteudo">
 			<h3>Simulador</h3>
 			<p style="color: red;"><strong name="Erro"></strong></p>
+			<p style="color: green;"><strong name="Sucesso"></strong></p>
 			<div class="Conjunto" style="justify-content: flex-start;width: 100%;">
 				<div class="ui form" style="width: 80%;">
 					<div class="three fields">
@@ -116,6 +118,82 @@
 
 		document.querySelector('[name=Vencimento]').min = Ano+'-'+Mes+'-'+Dia
 
+		function GerarContrato(){
+			nCPF = document.querySelector("[name=CPF]").value;
+
+			Neutralino.filesystem.readFile('C:/Alphine/Clientes.json').then(resultado => {
+				Clientes = JSON.parse(resultado);
+				
+				function ConsultaCPF(Registro) {
+					return Registro.Cpf === nCPF;
+				}
+
+				if (Clientes.find(ConsultaCPF) == undefined){
+					document.querySelector('[name=Erro]').innerHTML = 'CPF Não encontrado!';
+				}else{
+					Neutralino.filesystem.readFile('C:/Alphine/Contratos.json').then(resultado => {
+						Dados = JSON.parse(resultado)
+						ID_Contrato = Dados.length + 1;
+
+						Dados.push({
+							"ID": ID_Contrato,
+							"CPF_Cliente": Clientes.find(ConsultaCPF)['Cpf'],
+							"Valo_emprestado": Capital.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
+							"Juros": Juros,
+							"Parcelas": Parcelas,
+							"Valo_Total": Montante.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
+							"Status": "Em aberto"
+						})
+
+						Neutralino.filesystem.writeFile('C:/Alphine/Contratos.json', JSON.stringify(Dados));
+						document.querySelector('[name=Sucesso]').innerHTML = 'Contrato criado com sucesso!';
+					});
+
+					Neutralino.filesystem.readFile('C:/Alphine/Faturas.json').then(resultado => {
+						Dados = JSON.parse(resultado)
+
+						for (var nParcela = 1;nParcela <= Parcelas; nParcela++){
+
+							if (nParcela > 1){
+								DataVencimento = new Date(Vencimento);
+								DataVencimento.setMonth(DataVencimento.getMonth() + nParcela);
+								Mes = DataVencimento.getMonth() ;
+								Ano = DataVencimento.getFullYear();
+								Dia = DataVencimento.getDate() + 1;
+
+								if (Mes < 10){
+									Mes = '0'+Mes;
+								}
+
+								if (Dia < 10){
+									Dia = '0'+Dia;
+								}
+
+								if (Mes == 00 || Mes == "00"){
+									Mes = '12';
+									Ano = DataVencimento.getFullYear() - 1;
+								}
+
+								DataVencimento = Dia+'/'+Mes+'/'+Ano
+							}else{
+								DataVencimento = Vencimento.replace(/(\d+)-(\d+)-(\d+)/gi, "$3/$2/$1");
+							}
+							Dados.push({
+								"ID_Contrato": ID_Contrato,
+								"Numero_Fatura": nParcela,
+								"Valor_Parcela": Parcela.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
+								"Juros_Pagos": jurosPagos.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}),
+								"Data_Vencimento": DataVencimento,
+								"Status": "Em aberto"
+							})
+						}
+						
+						Neutralino.filesystem.writeFile('C:/Alphine/Faturas.json', JSON.stringify(Dados));
+					});
+				}
+			});
+		}
+
 		function CalcularEmprestimo(){
 			Capital = document.querySelector("[name=Capital]");
 			Parcelas = document.querySelector("[name=Parcelas]");
@@ -169,11 +247,13 @@
 							<input type="text" name="CPF" placeholder="CPF do cliente">
 						</div>
 						<div class="field">
-							<button onclick="" style="margin-top: 25px;" class="ui primary button">Criar contrato</button>
+							<button onclick="GerarContrato()" style="margin-top: 25px;" class="ui primary button">Criar contrato</button>
 						</div>
 					</div>
 				</div>
 				`;
+
+				$('[name=CPF]').mask('000.000.000-00');
 
 				for (var nParcela = 1;nParcela <= Parcelas; nParcela++){
 					if (nParcela > 1){

@@ -21,7 +21,52 @@
 			</div>
 		</div>
 		<div class="Conteudo">
-			
+			<h3>Contratos</h3>
+			<div class="Linha"></div>
+			<div style="overflow-x: scroll;width: 100%;">
+				<table class="ui single line table">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>CPF do Cliente</th>
+							<th>Valor emprestado</th>
+							<th>Juros</th>
+							<th>Parcelas</th>
+							<th>Valor total</th>
+							<th>Status contrato</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody class="Registros">
+						
+					</tbody>
+				</table>
+				<div class="Linha"></div>
+			</div>
 		</div>
+		<script src="../../Js/index.js"></script>
+		<script>
+			Neutralino.filesystem.readFile('C:/Alphine/Contratos.json').then(resultado => {
+				Contratos = JSON.parse(resultado);
+				
+				for (var nContrato = 0; nContrato < Contratos.length; nContrato++){
+					document.querySelector('.Registros').innerHTML += `
+					<tr>
+						<td>`+Contratos[nContrato]["ID"]+`</td>
+						<td>`+Contratos[nContrato]["CPF_Cliente"]+`</td>
+						<td>`+Contratos[nContrato]["Valo_emprestado"]+`</td>
+						<td>`+Contratos[nContrato]["Juros"]+`% a.m</td>
+						<td>`+Contratos[nContrato]["Parcelas"]+`</td>
+						<td>`+Contratos[nContrato]["Valo_Total"]+`</td>
+						<td>`+Contratos[nContrato]["Status"]+`</td>
+						<td><img onclick="localStorage.setItem('ID_Contrato', `+Contratos[nContrato]["ID"]+`);window.location.href='./Faturas/index.html';" style="cursor: pointer;" title="ver parcelas" src="../../Estilo/Icones/Faturas.png"></td>
+						
+					</tr>
+					`;
+					// <td><img style="cursor: pointer;" title="Deletar contrato" src="../../Estilo/Icones/Deletar.png"></td>
+				}
+			});
+		</script>
+		
 	</body>
 </html>

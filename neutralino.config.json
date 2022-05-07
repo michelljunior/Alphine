@@ -27,7 +27,7 @@
       "fullScreen": false,
       "alwaysOnTop": false,
       "icon": "/src/Estilo/Icones/50x50.png",
-      "enableInspector": true,
+      "enableInspector": false,
       "borderless": false,
       "maximize": false,
       "hidden": false,
@@ -42,9 +42,9 @@
   },
   "cli": {
     "binaryName": "Alphine",
-    "resourcesPath": "/resources/",
+    "resourcesPath": "/src/",
     "extensionsPath": "/extensions/",
-    "clientLibrary": "/resources/js/neutralino.js",
+    "clientLibrary": "/src/Js/neutralino.js",
     "binaryVersion": "4.5.0",
     "clientVersion": "3.4.0"
   }

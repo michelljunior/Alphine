@@ -17,8 +17,14 @@ Neutralino.filesystem.getStats('C:/Alphine').then(resultado => {
     }, () => {
         Neutralino.filesystem.writeFile('C:/Alphine/Contratos.json', '[]');
     });
+    Neutralino.filesystem.getStats('C:/Alphine/Faturas.json').then(resultado => {
+        console.log('Base de Faturas OK')
+    }, () => {
+        Neutralino.filesystem.writeFile('C:/Alphine/Faturas.json', '[]');
+    });
 }, () => {
     Neutralino.filesystem.createDirectory('C:/Alphine');
     Neutralino.filesystem.writeFile('C:/Alphine/Clientes.json', '[]');
     Neutralino.filesystem.writeFile('C:/Alphine/Contratos.json', '[]');
+    Neutralino.filesystem.writeFile('C:/Alphine/Faturas.json', '[]');
 });
